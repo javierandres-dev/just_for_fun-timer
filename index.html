@@ -4,24 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>Timer</title>
   </head>
   <body>
-    <main>
-      <div>
-        <span id="work">work time</span>
-        <span id="break">break time</span>
-        <span id="rest">rest time</span>
+    <noscript>
+      It looks like JavaScript is currently disabled in your browser. For the
+      best experience and full functionality of this site, please enable
+      JavaScript.
+    </noscript>
+    <main class="container">
+      <div class="btn-group">
+        <span id="work" class="btn btn-rectangle">work time</span>
+        <span id="break" class="btn btn-rectangle">break time</span>
+        <span id="rest" class="btn btn-rectangle">rest time</span>
       </div>
-      <div id="display"></div>
-      <div>
-        <span id="hours">hours</span>
-        <span id="minutes">minutes</span>
+      <div id="display" class="display"></div>
+      <div class="btn-group">
+        <span id="moreMinutes" class="btn btn-rectangle">+</span>
+        <span class="btn btn-rectangle">minutes</span>
+        <span id="lessMinutes" class="btn btn-rectangle">-</span>
       </div>
-      <div>
-        <span id="start">start</span>
-        <span id="stop">stop</span>
-        <span id="reset">reset</span>
+      <div class="btn-group">
+        <span id="start" class="btn btn-circle">start</span>
+        <span id="stop" class="btn btn-circle">stop</span>
+        <span id="reset" class="btn btn-circle">reset</span>
       </div>
     </main>
     <script src="js/script.js"></script>

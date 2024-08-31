@@ -5,44 +5,21 @@ const $work = d.getElementById('work'),
   $break = d.getElementById('break'),
   $rest = d.getElementById('rest'),
   $display = d.getElementById('display'),
-  $hours = d.getElementById('hours'),
-  $minutes = d.getElementById('minutes'),
+  $moreMinutes = d.getElementById('moreMinutes'),
+  $lessMinutes = d.getElementById('lessMinutes'),
   $start = d.getElementById('start'),
   $stop = d.getElementById('stop'),
   $reset = d.getElementById('reset');
 
-let intervalId = null;
+let intervalId = null,
+  hours = null,
+  minutes = null,
+  seconds = null;
 
 d.addEventListener('DOMContentLoaded', () => {
   eventListeners();
-  $display.textContent = '00:00:00';
+  setDisplay();
 });
-
-function startTimer(duration = null) {
-  console.log('startTimer');
-  let timer = null;
-  let hours = null;
-  let minutes = null;
-  let seconds = null;
-  if (duration === 'work') timer = 60 * 25;
-  if (duration === 'break') timer = 60 * 5;
-  if (duration === 'rest') timer = 60 * 30;
-  intervalId = setInterval(() => {
-    minutes = parseInt(timer / 60, 10);
-    seconds = parseInt(timer % 60, 10);
-    minutes = minutes < 10 ? `0${minutes}` : minutes;
-    seconds = seconds < 10 ? `0${seconds}` : seconds;
-    $display.textContent = `00:${minutes}:${seconds}`;
-    if (--timer < 0) resetTimer();
-  }, 1000);
-  console.log(intervalId);
-}
-
-function resetTimer() {
-  console.log('handleReset');
-  clearInterval(intervalId);
-  $display.textContent = '00:00:00';
-}
 
 function eventListeners() {
   $work.addEventListener('click', () => {
@@ -54,9 +31,15 @@ function eventListeners() {
   $rest.addEventListener('click', () => {
     startTimer('rest');
   });
-  $hours.addEventListener('click', handleHours);
-  $minutes.addEventListener('click', handleMinutes);
-  $start.addEventListener('click', handleStart);
+  $moreMinutes.addEventListener('click', () => {
+    handleTimer('moreMinutes');
+  });
+  $lessMinutes.addEventListener('click', () => {
+    handleTimer('lessMinutes');
+  });
+  $start.addEventListener('click', () => {
+    startTimer('custom');
+  });
   $stop.addEventListener('click', () => {
     stopTimer();
   });
@@ -65,18 +48,59 @@ function eventListeners() {
   });
 }
 
-function handleHours() {
-  console.log('handleHours');
+function setDisplay(content = null) {
+  console.log('setDisplay');
+  if (!content) $display.textContent = '00:00';
+  else $display.textContent = content;
 }
 
-function handleMinutes() {
-  console.log('handleMinutes');
+function startTimer(duration = null) {
+  let timer = null;
+  if (duration === 'custom') {
+    console.log('custom...');
+    let ms = $display.textContent;
+    ms = hms.split(':');
+    console.log(ms);
+    const m = +ms[0];
+    console.log(m);
+    console.log('...');
+    timer = 60 * m;
+  } else {
+    if (duration === 'work') timer = 60 * 25;
+    if (duration === 'break') timer = 60 * 5;
+    if (duration === 'rest') timer = 60 * 30;
+  }
+  intervalId = setInterval(() => {
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+    setDisplay(`${minutes}:${seconds}`);
+    if (--timer < 0) resetTimer();
+  }, 1000);
 }
 
-function handleStart() {
-  console.log('handleStart');
+function handleTimer(trigger) {
+  let ms = $display.textContent;
+  ms = hms.split(':');
+  let m = +hms[0];
+  if (trigger === 'moreMinutes') {
+    if (m === 59) return;
+    m++;
+  }
+  if (trigger === 'lessMinutes') {
+    if (m === 0) return;
+    m--;
+  }
+  m = m < 10 ? `0${m}` : m;
+  setDisplay(`${m}:${hms[1]}`);
 }
 
 function stopTimer() {
   console.log('stopTimer');
+}
+
+function resetTimer() {
+  clearInterval(intervalId);
+  setDisplay();
 }
