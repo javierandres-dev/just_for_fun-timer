@@ -8,11 +8,11 @@ const $work = d.getElementById('work'),
   $moreMinutes = d.getElementById('moreMinutes'),
   $lessMinutes = d.getElementById('lessMinutes'),
   $tenMinutesLess = d.getElementById('tenMinutesLess'),
-  $start = d.getElementById('start'),
-  $stop = d.getElementById('stop'),
+  $play = d.getElementById('play'),
   $reset = d.getElementById('reset');
 
-let intervalId = null;
+let intervalId = null,
+  playing = false;
 
 d.addEventListener('DOMContentLoaded', () => {
   eventListeners();
@@ -38,11 +38,9 @@ function eventListeners() {
   $tenMinutesLess.addEventListener('click', () => {
     handleTimer('tenMinutesLess');
   });
-  $start.addEventListener('click', () => {
-    startTimer('custom');
-  });
-  $stop.addEventListener('click', () => {
-    stopTimer();
+  $play.addEventListener('click', () => {
+    if (playing) stopTimer();
+    else startTimer('custom');
   });
   $reset.addEventListener('click', () => {
     resetTimer();
@@ -67,14 +65,17 @@ function startTimer(duration = null) {
     if (duration === 'work') timer = 60 * 25;
     if (duration === 'break') timer = 60 * 5;
   }
+  timer = 3;
   intervalId = setInterval(() => {
     let minutes = parseInt(timer / 60, 10),
       seconds = parseInt(timer % 60, 10);
     minutes = minutes < 10 ? `0${minutes}` : minutes;
     seconds = seconds < 10 ? `0${seconds}` : seconds;
     setDisplay(`${minutes}:${seconds}`);
-    if (--timer < 0) stopTimer();
+    if (--timer < 0) stopTimer(duration);
   }, 1000);
+  playing = true;
+  $play.textContent = 'pause';
 }
 
 function handleTimer(trigger) {
@@ -84,18 +85,59 @@ function handleTimer(trigger) {
   if (trigger === 'moreMinutes' || trigger === 'tenMinutesMore')
     trigger === 'moreMinutes' ? m++ : (m += 10);
   if (trigger === 'lessMinutes' || trigger === 'tenMinutesLess') {
-    if (m <= 0) return;
     trigger === 'lessMinutes' ? m-- : (m -= 10);
   }
+  if (m <= 0) return;
   m = m < 10 ? `0${m}` : m;
   setDisplay(`${m}:${ms[1]}`);
 }
 
-function stopTimer() {
-  clearInterval(intervalId);
+function stopTimer(trigger = null) {
+  if (trigger) {
+    if ('speechSynthesis' in window) {
+      const synthesis = window.speechSynthesis,
+        utterance = new SpeechSynthesisUtterance(`${trigger} time completed`);
+      synthesis.speak(utterance);
+    } else {
+      alert(`${trigger} time completed | Text-to-speech not supported.`);
+    }
+    $play.setAttribute('disabled', true);
+    resetTimer();
+  } else {
+    clearInterval(intervalId);
+    playing = false;
+    $play.textContent = 'play';
+  }
 }
 
 function resetTimer() {
   clearInterval(intervalId);
+  playing = false;
+  $play.textContent = 'play';
   setDisplay();
+}
+
+function handleButtons(trigger = null) {
+  /*
+
+  $play.removeAttribute('disabled');
+
+  $work.removeAttribute('disabled');
+  $break.removeAttribute('disabled');
+  $tenMinutesMore.removeAttribute('disabled');
+  $moreMinutes.removeAttribute('disabled');
+  $lessMinutes.removeAttribute('disabled');
+  $tenMinutesLess.removeAttribute('disabled');
+  $play.setAttribute('disabled', true);
+
+  if (intervalId) {
+    $work.setAttribute('disabled', true);
+    $break.setAttribute('disabled', true);
+    $tenMinutesMore.setAttribute('disabled', true);
+    $moreMinutes.setAttribute('disabled', true);
+    $lessMinutes.setAttribute('disabled', true);
+    $tenMinutesLess.setAttribute('disabled', true);
+  }
+
+  */
 }
