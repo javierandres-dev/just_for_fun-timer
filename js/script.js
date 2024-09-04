@@ -55,6 +55,7 @@ function setDisplay(content = null) {
 }
 
 function startTimer(duration = null) {
+  if (playing) return;
   let timer = null;
   if (duration === 'custom') {
     let ms = $display.textContent;
@@ -87,7 +88,7 @@ function handleTimer(trigger) {
   if (trigger === 'lessMinutes' || trigger === 'tenMinutesLess') {
     trigger === 'lessMinutes' ? m-- : (m -= 10);
   }
-  if (m <= 0) return;
+  if (m <= 0 || m >= 100) return;
   m = m < 10 ? `0${m}` : m;
   setDisplay(`${m}:${ms[1]}`);
 }
@@ -118,9 +119,7 @@ function resetTimer() {
 function handleButtons(content = null) {
   if (playing) {
     handleTimeButtons(false);
-    $play.innerHTML = `
-<span>Pause</span> <span class="material-symbols-outlined">pause</span>
-    `;
+    $play.innerHTML = `<span class="material-symbols-outlined">pause</span>`;
     $play.removeAttribute('disabled');
   } else {
     if (!content && !paused) {
@@ -135,9 +134,7 @@ function handleButtons(content = null) {
       }
       handleTimeButtons(true);
     }
-    $play.innerHTML = `
-<span>Play</span> <span class="material-symbols-outlined">play_arrow</span>
-    `;
+    $play.innerHTML = `<span class="material-symbols-outlined">play_arrow</span>`;
   }
 }
 
