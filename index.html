@@ -13,23 +13,47 @@
       best experience and full functionality of this site, please enable
       JavaScript.
     </noscript>
+    <h1>Timer <span class="material-symbols-outlined">timer</span></h1>
     <main class="container">
-      <section class="btn-group">
-        <button id="work" class="btn btn-rectangle">work time</button>
-        <button id="break" class="btn btn-rectangle">break time</button>
-      </section>
-      <div id="display" class="display"></div>
-      <section class="btn-group">
-        <button id="tenMinutesMore" class="btn btn-circle">+10</button>
-        <button id="moreMinutes" class="btn btn-circle">+1</button>
-        <button id="lessMinutes" class="btn btn-circle">-1</button>
-        <button id="tenMinutesLess" class="btn btn-circle">-10</button>
-      </section>
-      <section class="btn-group">
-        <button id="play" class="btn btn-rectangle">play</button>
-        <button id="reset" class="btn btn-rectangle">reset</button>
-      </section>
+      <div class="timer">
+        <section class="btn-group">
+          <button id="work" class="btn btn-rectangle">Work Time</button>
+          <button id="break" class="btn btn-rectangle">Break Time</button>
+        </section>
+        <div id="display" class="display"></div>
+        <p>Minutes</p>
+        <section class="btn-group">
+          <button id="tenMinutesLess" class="btn btn-circle">-10</button>
+          <button id="lessMinutes" class="btn btn-circle">-1</button>
+          <button id="moreMinutes" class="btn btn-circle">+1</button>
+          <button id="tenMinutesMore" class="btn btn-circle">+10</button>
+        </section>
+        <section class="btn-group">
+          <button id="play" class="btn btn-rectangle btn-play"></button>
+          <button id="reset" class="btn btn-rectangle btn-reset">Reset</button>
+        </section>
+      </div>
     </main>
+    <footer>
+      <p>
+        Built by
+        <a
+          href="https://github.com/javierandres-dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><img src="img/javi.png" alt="javi avatar" /></a
+        >&copy; 2024
+      </p>
+      <p>
+        Found a bug or have an idea?
+        <a
+          href="https://www.linkedin.com/in/javierandres-dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Contact me</a
+        >.
+      </p>
+    </footer>
     <script src="js/script.js"></script>
   </body>
 </html>

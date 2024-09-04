@@ -1,4 +1,18 @@
 @import url(./normalize.css);
+@import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+:root {
+  --c-black: #000;
+  --c-white: #fff;
+  --c-dark: #343a40;
+  --c-light: #e1ecf7;
+  --c-blue: #0077b6;
+  --c-highlight-yellow: rgb(240, 255, 0);
+  --c-highlight-green: rgb(34, 255, 0);
+  --c-highlight-fucsia: rgb(255, 0, 219);
+  --c-highlight-blue: rgb(4, 223, 255);
+  --c-highlight-purple: rgb(176, 0, 255);
+}
 *,
 *::before,
 *::after {
@@ -10,14 +24,78 @@ html {
 }
 body {
   height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'SUSE', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  background-color: var(--c-white);
+  color: var(--c-dark);
 }
-.container {
-  border: 1px solid green;
-  width: 100%;
+a {
+  color: var(--c-blue);
+}
+a:hover {
+  color: var(--c-highlight-blue);
+}
+a:active {
+  color: var(--c-highlight-fucsia);
+}
+h1 {
+  font-size: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+p {
+  font-size: 2em;
+  text-align: center;
+  color: var(--c-black);
+}
+footer {
+  font-weight: 100;
+  font-size: 0.8125em;
   padding: 1rem;
 }
+footer p {
+  margin: 0;
+}
+footer > p:first-child {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+footer > p:nth-child(2) {
+  text-align: right;
+}
+footer img {
+  width: 2.6rem;
+  margin: 0 0.5rem;
+}
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.container {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.timer {
+  max-width: 40rem;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: var(--c-light);
+  border: 1px solid var(--c-light);
+  box-shadow: 0 0 1rem 0.25rem var(--c-light);
+}
 .display {
-  border: 1px solid blue;
+  border: 1rem solid var(--c-blue);
   border-radius: 50%;
   width: 30rem;
   height: 30rem;
@@ -34,9 +112,12 @@ body {
   margin: 2rem 0;
 }
 .btn {
-  border: 1px solid grey;
   font-size: 2em;
   text-align: center;
+  background-color: var(--c-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .btn:hover {
   cursor: pointer;
@@ -50,7 +131,13 @@ body {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+.btn-time {
+  border: 1px solid var(--c-highlight-blue);
+}
+.btn-play {
+  border: 1px solid var(--c-highlight-green);
+}
+.btn-reset {
+  border: 1px solid var(--c-highlight-purple);
 }

@@ -12,7 +12,8 @@ const $work = d.getElementById('work'),
   $reset = d.getElementById('reset');
 
 let intervalId = null,
-  playing = false;
+  playing = false,
+  paused = false;
 
 d.addEventListener('DOMContentLoaded', () => {
   eventListeners();
@@ -50,10 +51,10 @@ function eventListeners() {
 function setDisplay(content = null) {
   if (!content) $display.textContent = '00:00';
   else $display.textContent = content;
+  handleButtons(content);
 }
 
 function startTimer(duration = null) {
-  stopTimer();
   let timer = null;
   if (duration === 'custom') {
     let ms = $display.textContent;
@@ -65,7 +66,6 @@ function startTimer(duration = null) {
     if (duration === 'work') timer = 60 * 25;
     if (duration === 'break') timer = 60 * 5;
   }
-  timer = 3;
   intervalId = setInterval(() => {
     let minutes = parseInt(timer / 60, 10),
       seconds = parseInt(timer % 60, 10);
@@ -74,8 +74,8 @@ function startTimer(duration = null) {
     setDisplay(`${minutes}:${seconds}`);
     if (--timer < 0) stopTimer(duration);
   }, 1000);
+  paused = false;
   playing = true;
-  $play.textContent = 'pause';
 }
 
 function handleTimer(trigger) {
@@ -92,52 +92,75 @@ function handleTimer(trigger) {
   setDisplay(`${m}:${ms[1]}`);
 }
 
-function stopTimer(trigger = null) {
-  if (trigger) {
+function stopTimer(duration = null) {
+  if (duration) {
     if ('speechSynthesis' in window) {
       const synthesis = window.speechSynthesis,
-        utterance = new SpeechSynthesisUtterance(`${trigger} time completed`);
+        utterance = new SpeechSynthesisUtterance(`${duration} time completed`);
       synthesis.speak(utterance);
-    } else {
-      alert(`${trigger} time completed | Text-to-speech not supported.`);
-    }
-    $play.setAttribute('disabled', true);
+    } else alert(`${duration} time completed | Text-to-speech not supported.`);
     resetTimer();
   } else {
     clearInterval(intervalId);
     playing = false;
-    $play.textContent = 'play';
+    paused = true;
+    setDisplay($display.textContent);
   }
 }
 
 function resetTimer() {
   clearInterval(intervalId);
+  paused = false;
   playing = false;
-  $play.textContent = 'play';
   setDisplay();
 }
 
-function handleButtons(trigger = null) {
-  /*
-
-  $play.removeAttribute('disabled');
-
-  $work.removeAttribute('disabled');
-  $break.removeAttribute('disabled');
-  $tenMinutesMore.removeAttribute('disabled');
-  $moreMinutes.removeAttribute('disabled');
-  $lessMinutes.removeAttribute('disabled');
-  $tenMinutesLess.removeAttribute('disabled');
-  $play.setAttribute('disabled', true);
-
-  if (intervalId) {
-    $work.setAttribute('disabled', true);
-    $break.setAttribute('disabled', true);
-    $tenMinutesMore.setAttribute('disabled', true);
-    $moreMinutes.setAttribute('disabled', true);
-    $lessMinutes.setAttribute('disabled', true);
-    $tenMinutesLess.setAttribute('disabled', true);
+function handleButtons(content = null) {
+  if (playing) {
+    handleTimeButtons(false);
+    $play.innerHTML = `
+<span>Pause</span> <span class="material-symbols-outlined">pause</span>
+    `;
+    $play.removeAttribute('disabled');
+  } else {
+    if (!content && !paused) {
+      $play.setAttribute('disabled', true);
+      $play.style.cursor = 'initial';
+    }
+    if (paused) handleTimeButtons(false);
+    else {
+      if (content) {
+        $play.removeAttribute('disabled');
+        $play.style.cursor = 'pointer';
+      }
+      handleTimeButtons(true);
+    }
+    $play.innerHTML = `
+<span>Play</span> <span class="material-symbols-outlined">play_arrow</span>
+    `;
   }
+}
 
-  */
+function handleTimeButtons(enable) {
+  const timeButtons = [
+    $work,
+    $break,
+    $tenMinutesMore,
+    $moreMinutes,
+    $lessMinutes,
+    $tenMinutesLess,
+  ];
+  if (enable) {
+    timeButtons.forEach((tb) => {
+      tb.removeAttribute('disabled');
+      tb.style.cursor = 'pointer';
+      tb.classList.add('btn-time');
+    });
+  } else {
+    timeButtons.forEach((tb) => {
+      tb.setAttribute('disabled', true);
+      tb.style.cursor = 'initial';
+      tb.classList.remove('btn-time');
+    });
+  }
 }
