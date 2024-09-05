@@ -50,7 +50,7 @@ function eventListeners() {
 
 function setDisplay(content = null) {
   if (!content) $display.textContent = '00:00';
-  else $display.textContent = content;
+  else $display.innerHTML = content;
   handleButtons(content);
 }
 
@@ -72,7 +72,8 @@ function startTimer(duration = null) {
       seconds = parseInt(timer % 60, 10);
     minutes = minutes < 10 ? `0${minutes}` : minutes;
     seconds = seconds < 10 ? `0${seconds}` : seconds;
-    setDisplay(`${minutes}:${seconds}`);
+    const className = seconds % 2 === 0 ? 'v-hidden' : '';
+    setDisplay(`${minutes}<span class="${className}">:</span>${seconds}`);
     if (--timer < 0) stopTimer(duration);
   }, 1000);
   paused = false;
@@ -100,7 +101,7 @@ function stopTimer(duration = null) {
         utterance = new SpeechSynthesisUtterance(`${duration} time completed`);
       synthesis.speak(utterance);
     } else alert(`${duration} time completed | Text-to-speech not supported.`);
-    const audio = new Audio('../audio/cuckoo.mp3');
+    const audio = new Audio('../audio/alarm.mp3');
     audio.play();
     resetTimer();
   } else {
