@@ -7,7 +7,6 @@
   --c-dark: #343a40;
   --c-light: #e1ecf7;
   --c-blue: #0077b6;
-  --c-highlight-yellow: rgb(240, 255, 0);
   --c-highlight-green: rgb(34, 255, 0);
   --c-highlight-fucsia: rgb(255, 0, 219);
   --c-highlight-blue: rgb(4, 223, 255);
@@ -50,11 +49,6 @@ h1 {
   gap: 1rem;
   margin-top: 2rem;
 }
-p {
-  font-size: 2em;
-  text-align: center;
-  color: var(--c-black);
-}
 footer {
   font-weight: 100;
   font-size: 0.8125em;
@@ -93,6 +87,11 @@ footer img {
   background-color: var(--c-light);
   border: 1px solid var(--c-light);
   box-shadow: 0 0 1rem 0.25rem var(--c-light);
+}
+.timer p {
+  font-size: 2em;
+  text-align: center;
+  color: var(--c-black);
 }
 .display {
   border: 1rem solid var(--c-blue);

@@ -100,6 +100,8 @@ function stopTimer(duration = null) {
         utterance = new SpeechSynthesisUtterance(`${duration} time completed`);
       synthesis.speak(utterance);
     } else alert(`${duration} time completed | Text-to-speech not supported.`);
+    const audio = new Audio('../audio/cuckoo.mp3');
+    audio.play();
     resetTimer();
   } else {
     clearInterval(intervalId);
