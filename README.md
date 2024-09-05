@@ -1,5 +1,5 @@
 # just_for_fun-timer
-Timer build with vanilla HTML, CSS and javaScript.  
+Timer build with vanilla HTML, CSS and JavaScript.  
 How does it look? Take a look at [Timer](https://javierandres-dev.github.io/just_for_fun-timer/)
 ## Stack
 - HTML
